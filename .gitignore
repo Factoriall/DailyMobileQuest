@@ -1,0 +1,66 @@
+# Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+*.apk
+*.ap_ 
+
+# Gradle files
+.gradle/
+build/
+
+# Local configuration files
+local.properties
+.idea/libraries/
+
+# User-specific files
+*.swp
+*.swo
+*~
+
+# Log files
+*.log
+
+# Generated files
+/gen/
+# Android specific
+*.keystore
+
+# JetBrains
+*.idea/
+
+# Kotlin
+*.kotlin_metadata
+
+# Android Studio captures the logs of previous sessions in a file called studio.log
+studio.log
+
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# Linux system files
+*~ 
+
+# Google Cloud SDK
+.google/
+
+# Firebase related
+firebase-appdistribution.json
+
+# Archive files
+*.tar.gz
+*.zip
+*.rar
+*.7z
+*.tar
+*.dmg
+
+# JDK specific files
+hs_err_pid*
+
+# Gradle Wrapper files
+gradle-wrapper.jar
