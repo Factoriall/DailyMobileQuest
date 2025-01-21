@@ -61,14 +61,14 @@ fun MainScreen(modifier: Modifier = Modifier) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.List,
                 contentDescription = "Quests",
-                tint = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.size(32.dp)
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(48.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "퀘스트 목록",
                 style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = MaterialTheme.colorScheme.primary,
             )
         }
     }
