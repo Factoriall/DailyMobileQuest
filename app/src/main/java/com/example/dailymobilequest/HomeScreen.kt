@@ -1,6 +1,7 @@
 package com.example.dailymobilequest
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,45 +23,62 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.dailymobilequest.ui.theme.DailyMobileQuestTheme
 
-/**
- * 클래스에 대한 간단한 설명이나 참고 url을 남겨주세요.
- * Created by fac.toriall on 2025.01.22..
- */
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    onStartButtonClicked: () -> Unit = {},
+    onQuestsButtonClicked: () -> Unit = {}
+) {
     Box(modifier = modifier.fillMaxSize()) {
-        CircleButton(modifier = Modifier.align(Alignment.Center))
+        CircleButton(
+            modifier = Modifier.align(Alignment.Center),
+            onStartButtonClicked = onStartButtonClicked
+        )
 
-        Row(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 80.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.List,
-                contentDescription = "Quests",
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(48.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = "퀘스트 목록",
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.primary,
-            )
-        }
+        QuestButton(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            onQuestsButtonClicked = onQuestsButtonClicked
+        )
     }
 }
 
 @Composable
-fun CircleButton(modifier: Modifier) {
+private fun QuestButton(
+    modifier: Modifier,
+    onQuestsButtonClicked: () -> Unit,
+) {
+    Row(
+        modifier = modifier
+            .padding(bottom = 80.dp)
+            .clickable {
+                onQuestsButtonClicked()
+            },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.List,
+            contentDescription = "Quests",
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(48.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = "퀘스트 목록",
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.primary,
+        )
+    }
+}
+
+@Composable
+fun CircleButton(modifier: Modifier, onStartButtonClicked: () -> Unit) {
     Box(
         modifier = modifier
             .size(200.dp)
             .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.primary),
+            .background(MaterialTheme.colorScheme.primary)
+            .clickable { onStartButtonClicked() },
     ) {
         Text(
             text = "START",

@@ -22,19 +22,27 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             DailyMobileQuestTheme {
-                val navController = rememberNavController()
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(color = MaterialTheme.colorScheme.background)
                 ) { innerPadding ->
+                    val navController = rememberNavController()
                     NavHost(
                         navController = navController,
                         startDestination = Screen.HOME.name,
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable(route = Screen.HOME.name) {
-                            HomeScreen()
+                            HomeScreen(
+                                onQuestsButtonClicked = {
+                                    navController.navigate(Screen.QUEST.name)
+                                }
+                            )
+                        }
+
+                        composable(route = Screen.QUEST.name) {
+                            QuestScreen()
                         }
                     }
                 }
