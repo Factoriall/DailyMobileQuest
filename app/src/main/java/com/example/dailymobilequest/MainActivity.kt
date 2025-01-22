@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.dailymobilequest.ui.theme.DailyMobileQuestTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalSharedTransitionApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -28,21 +31,28 @@ class MainActivity : ComponentActivity() {
                         .background(color = MaterialTheme.colorScheme.background)
                 ) { innerPadding ->
                     val navController = rememberNavController()
-                    NavHost(
-                        navController = navController,
-                        startDestination = Screen.HOME.name,
-                        modifier = Modifier.padding(innerPadding)
-                    ) {
-                        composable(route = Screen.HOME.name) {
-                            HomeScreen(
-                                onQuestsButtonClicked = {
-                                    navController.navigate(Screen.QUEST.name)
-                                }
-                            )
-                        }
+                    SharedTransitionLayout {
+                        NavHost(
+                            navController = navController,
+                            startDestination = Screen.HOME.name,
+                            modifier = Modifier.padding(innerPadding)
+                        ) {
+                            composable(route = Screen.HOME.name) {
+                                HomeScreen(
+                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                    animatedContentScope = this@composable,
+                                    onQuestsButtonClicked = {
+                                        navController.navigate(Screen.QUEST.name)
+                                    }
+                                )
+                            }
 
-                        composable(route = Screen.QUEST.name) {
-                            QuestScreen()
+                            composable(route = Screen.QUEST.name) {
+                                QuestScreen(
+                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                    animatedContentScope = this@composable,
+                                )
+                            }
                         }
                     }
                 }
