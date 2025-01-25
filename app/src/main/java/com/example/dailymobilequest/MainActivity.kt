@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.dailymobilequest.data.Screen
 import com.example.dailymobilequest.ui.theme.DailyMobileQuestTheme
 
 class MainActivity : ComponentActivity() {
@@ -49,6 +50,13 @@ class MainActivity : ComponentActivity() {
 
                             composable(route = Screen.QUEST.name) {
                                 QuestScreen(
+                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                    animatedContentScope = this@composable,
+                                )
+                            }
+
+                            composable(route = Screen.DETAIL.name) {
+                                DetailScreen(
                                     sharedTransitionScope = this@SharedTransitionLayout,
                                     animatedContentScope = this@composable,
                                 )
