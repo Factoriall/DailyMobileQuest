@@ -1,5 +1,6 @@
 package com.example.dailymobilequest
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,9 +13,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.dailymobilequest.data.QuestData
 import com.example.dailymobilequest.data.Screen
 import com.example.dailymobilequest.ui.theme.DailyMobileQuestTheme
 
@@ -52,6 +55,9 @@ class MainActivity : ComponentActivity() {
                                 QuestScreen(
                                     sharedTransitionScope = this@SharedTransitionLayout,
                                     animatedContentScope = this@composable,
+                                    onClickAddButton = {
+                                        navController.navigate(Screen.APP_LIST.name)
+                                    }
                                 )
                             }
 
@@ -59,6 +65,25 @@ class MainActivity : ComponentActivity() {
                                 DetailScreen(
                                     sharedTransitionScope = this@SharedTransitionLayout,
                                     animatedContentScope = this@composable,
+                                )
+                            }
+
+                            composable(route = Screen.APP_LIST.name) {
+                                val context = LocalContext.current
+                                val packageManager = context.packageManager
+                                val intent = Intent(Intent.ACTION_MAIN, null).apply {
+                                    addCategory(Intent.CATEGORY_LAUNCHER)
+                                }
+                                val apps = packageManager.queryIntentActivities(intent, 0)
+
+                                AppListScreen(
+                                    appList = apps.map {
+                                        QuestData(
+                                            appName = it.loadLabel(packageManager).toString(),
+                                            iconDrawable = it.loadIcon(packageManager),
+                                            packageName = it.activityInfo.packageName
+                                        )
+                                    }
                                 )
                             }
                         }
