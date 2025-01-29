@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
@@ -76,17 +77,17 @@ class MainActivity : ComponentActivity() {
                                 val intent = Intent(Intent.ACTION_MAIN, null).apply {
                                     addCategory(Intent.CATEGORY_LAUNCHER)
                                 }
-                                val apps = packageManager.queryIntentActivities(intent, 0)
-
-                                AppListScreen(
-                                    appList = apps.map {
+                                val apps = remember {
+                                    packageManager.queryIntentActivities(intent, 0).map {
                                         QuestData(
                                             appName = it.loadLabel(packageManager).toString(),
                                             iconDrawable = it.loadIcon(packageManager),
                                             packageName = it.activityInfo.packageName
                                         )
                                     }
-                                )
+                                }
+
+                                AppListScreen(appList = apps)
                             }
                         }
                     }
