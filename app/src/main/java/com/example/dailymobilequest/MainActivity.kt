@@ -20,7 +20,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.dailymobilequest.data.QuestData
 import com.example.dailymobilequest.data.Screen
 import com.example.dailymobilequest.ui.theme.DailyMobileQuestTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalSharedTransitionApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
