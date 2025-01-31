@@ -12,16 +12,29 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.dailymobilequest.data.QuestData
 import com.example.dailymobilequest.data.Screen
+import com.example.dailymobilequest.data.StoreName
+import com.example.dailymobilequest.presentation.AppListScreen
+import com.example.dailymobilequest.presentation.AppListScreenUiModel
+import com.example.dailymobilequest.presentation.DetailScreen
+import com.example.dailymobilequest.presentation.HomeScreen
+import com.example.dailymobilequest.presentation.QuestAppUiModel
+import com.example.dailymobilequest.presentation.QuestScreen
 import com.example.dailymobilequest.ui.theme.DailyMobileQuestTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -65,29 +78,42 @@ class MainActivity : ComponentActivity() {
                             }
 
                             composable(route = Screen.DETAIL.name) {
-                                DetailScreen(
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    animatedContentScope = this@composable,
-                                )
+                                DetailScreen()
                             }
 
                             composable(route = Screen.APP_LIST.name) {
+                                var uiModel by remember<MutableState<AppListScreenUiModel>> {
+                                    mutableStateOf(AppListScreenUiModel.Loading)
+                                }
                                 val context = LocalContext.current
                                 val packageManager = context.packageManager
                                 val intent = Intent(Intent.ACTION_MAIN, null).apply {
                                     addCategory(Intent.CATEGORY_LAUNCHER)
                                 }
-                                val apps = remember {
-                                    packageManager.queryIntentActivities(intent, 0).map {
-                                        QuestData(
-                                            appName = it.loadLabel(packageManager).toString(),
-                                            iconDrawable = it.loadIcon(packageManager),
-                                            packageName = it.activityInfo.packageName
-                                        )
+
+                                LaunchedEffect(Unit) {
+                                    val appList = withContext(Dispatchers.IO) {
+                                        packageManager.queryIntentActivities(intent, 0).map {
+                                            val storeName = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                                                packageManager.getInstallSourceInfo(it.activityInfo.packageName).installingPackageName
+                                            } else {
+                                                packageManager.getInstallerPackageName(it.activityInfo.packageName)
+                                            }
+                                            QuestAppUiModel(
+                                                appName = it.loadLabel(packageManager).toString(),
+                                                iconDrawable = it.loadIcon(packageManager),
+                                                packageName = it.activityInfo.packageName,
+                                                storeName = StoreName.from(storeName)
+                                            )
+                                        }
                                     }
+
+                                    uiModel = AppListScreenUiModel.Loaded(appList)
                                 }
 
-                                AppListScreen(appList = apps)
+                                AppListScreen(uiModel) {
+                                    navController.navigate(Screen.DETAIL.name)
+                                }
                             }
                         }
                     }

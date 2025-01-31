@@ -1,4 +1,4 @@
-package com.example.dailymobilequest
+package com.example.dailymobilequest.presentation
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi

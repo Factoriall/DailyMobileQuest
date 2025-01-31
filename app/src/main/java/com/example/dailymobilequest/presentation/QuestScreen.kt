@@ -1,4 +1,4 @@
-package com.example.dailymobilequest
+package com.example.dailymobilequest.presentation
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.dailymobilequest.data.QuestData
 import com.example.dailymobilequest.ui.theme.DailyMobileQuestTheme
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -52,7 +51,7 @@ fun QuestScreen(
                 onQuestsButtonClicked = { }
             )
 
-            val questList = listOf<QuestData>()
+            val questList = listOf<QuestAppUiModel>()
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
