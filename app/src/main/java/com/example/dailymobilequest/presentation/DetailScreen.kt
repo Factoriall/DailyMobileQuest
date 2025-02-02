@@ -1,12 +1,10 @@
 package com.example.dailymobilequest.presentation
 
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.runtime.Composable
 
 /**
- * 클래스에 대한 간단한 설명이나 참고 url을 남겨주세요.
+ * 앱 관련 스케쥴을 정하는 화면
  */
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun DetailScreen() {
 

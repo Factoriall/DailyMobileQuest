@@ -1,7 +1,6 @@
 package com.example.dailymobilequest.presentation
 
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.dailymobilequest.R
-import com.example.dailymobilequest.data.StoreName
+import com.example.dailymobilequest.data.QuestAppProfile
 
 /**
  * 설치 가능한 앱 리스트 항목을 보여주는 화면
@@ -34,7 +33,7 @@ import com.example.dailymobilequest.data.StoreName
 @Composable
 fun AppListScreen(
     screenModel: AppListScreenUiModel,
-    onClick: (QuestAppUiModel) -> Unit = {}
+    onClick: (QuestAppProfile) -> Unit = {}
 ) {
     when (screenModel) {
         AppListScreenUiModel.Loading -> {
@@ -54,8 +53,8 @@ fun AppListScreen(
 
 @Composable
 private fun AppListLoadedScreen(
-    appList: List<QuestAppUiModel>,
-    onClick: (QuestAppUiModel) -> Unit
+    appList: List<QuestAppProfile>,
+    onClick: (QuestAppProfile) -> Unit
 ) {
     LazyColumn {
         items(appList) { app ->
@@ -110,17 +109,17 @@ fun AppListScreenPreview() {
     AppListScreen(
         AppListScreenUiModel.Loaded(
             listOf(
-                QuestAppUiModel(
+                QuestAppProfile(
                     appName = "App 1",
                     iconDrawable = ColorDrawable(0xFF000000.toInt()),
                     packageName = "com.example.app1"
                 ),
-                QuestAppUiModel(
+                QuestAppProfile(
                     appName = "App 2",
                     iconDrawable = ColorDrawable(0xFF111111.toInt()),
                     packageName = "com.example.app2"
                 ),
-                QuestAppUiModel(
+                QuestAppProfile(
                     appName = "App 3",
                     iconDrawable = ColorDrawable(0xFF999999.toInt()),
                     packageName = "com.example.app3"
@@ -132,12 +131,5 @@ fun AppListScreenPreview() {
 
 sealed class AppListScreenUiModel {
     data object Loading : AppListScreenUiModel()
-    data class Loaded(val appList: List<QuestAppUiModel>) : AppListScreenUiModel()
+    data class Loaded(val appList: List<QuestAppProfile>) : AppListScreenUiModel()
 }
-
-data class QuestAppUiModel(
-    val appName: String,
-    val iconDrawable: Drawable,
-    val packageName: String,
-    val storeName: StoreName = StoreName()
-)

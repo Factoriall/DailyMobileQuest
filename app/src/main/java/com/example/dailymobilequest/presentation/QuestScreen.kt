@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.dailymobilequest.data.QuestAppProfile
 import com.example.dailymobilequest.ui.theme.DailyMobileQuestTheme
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -51,7 +52,7 @@ fun QuestScreen(
                 onQuestsButtonClicked = { }
             )
 
-            val questList = listOf<QuestAppUiModel>()
+            val questList = listOf<QuestAppProfile>()
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),

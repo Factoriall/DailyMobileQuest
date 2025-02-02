@@ -74,6 +74,8 @@ dependencies {
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation(libs.androidx.room.ktx)
+
+    implementation(libs.androidx.hilt.navigation.compose)
 }
 
 // Allow references to generated code
