@@ -14,13 +14,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.dailymobilequest.data.Screen
 import com.example.dailymobilequest.presentation.AppListScreen
 import com.example.dailymobilequest.presentation.AppListViewModel
 import com.example.dailymobilequest.presentation.DetailScreen
+import com.example.dailymobilequest.presentation.QuestDetailViewModel
 import com.example.dailymobilequest.presentation.HomeScreen
 import com.example.dailymobilequest.presentation.QuestScreen
 import com.example.dailymobilequest.ui.theme.DailyMobileQuestTheme
@@ -68,11 +71,13 @@ class MainActivity : ComponentActivity() {
                             }
 
                             composable(
-                                route = Screen.DETAIL.name, arguments = listOf(
-
+                                route = "${Screen.DETAIL.name}/{packageName}", arguments = listOf(
+                                    navArgument("packageName") { type = NavType.StringType },
                                 )
                             ) {
-                                DetailScreen()
+                                val viewModel: QuestDetailViewModel = hiltViewModel()
+                                val uiState = viewModel.uiModel.collectAsState()
+                                DetailScreen(uiState.value)
                             }
 
                             composable(route = Screen.APP_LIST.name) {
@@ -80,7 +85,7 @@ class MainActivity : ComponentActivity() {
                                 val uiState = viewModel.uiModel.collectAsState()
 
                                 AppListScreen(uiState.value) { app ->
-                                    navController.navigate(Screen.DETAIL.name)
+                                    navController.navigate("${Screen.DETAIL.name}/${app.packageName}")
                                 }
                             }
                         }

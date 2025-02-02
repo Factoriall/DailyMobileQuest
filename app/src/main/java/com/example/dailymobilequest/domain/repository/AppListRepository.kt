@@ -7,10 +7,12 @@ import com.example.dailymobilequest.data.StoreName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * 앱의 리스트를 가져오고 저장하는 저장소
  */
+@Singleton
 class AppListRepository @Inject constructor(
     private val packageManager: PackageManager
 ) {
