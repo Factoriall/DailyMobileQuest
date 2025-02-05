@@ -29,8 +29,10 @@ class QuestDetailViewModel @Inject constructor(
         val app = appListRepository.getCache(packageName)
 
         if (app != null) {
+
             _uiModel.value = QuestAppDetailUiModel(
                 title = app.appName,
+                iconDrawable = app.iconDrawable,
                 packageName = app.packageName,
                 storeName = app.storeName.name,
                 questList = listOf()

@@ -1,9 +1,5 @@
 package com.example.dailymobilequest.presentation
 
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -28,12 +24,9 @@ import androidx.compose.ui.unit.dp
 import com.example.dailymobilequest.ui.theme.DailyMobileQuestTheme
 
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope? = null,
     onStartButtonClicked: () -> Unit = {},
     onQuestsButtonClicked: () -> Unit = {}
 ) {
@@ -43,25 +36,16 @@ fun HomeScreen(
             onStartButtonClicked = onStartButtonClicked
         )
 
-        with(sharedTransitionScope) {
-            QuestButton(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .then(
-                        if (animatedContentScope != null) Modifier.sharedElement(
-                            rememberSharedContentState(key = "quest_title"),
-                            animatedVisibilityScope = animatedContentScope
-                        ) else Modifier
-                    ),
-                onQuestsButtonClicked = onQuestsButtonClicked
-            )
-        }
+        QuestButton(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            onQuestsButtonClicked = onQuestsButtonClicked
+        )
     }
 }
 
 @Composable
 fun QuestButton(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onQuestsButtonClicked: () -> Unit,
 ) {
     Row(
@@ -106,17 +90,10 @@ fun CircleButton(modifier: Modifier, onStartButtonClicked: () -> Unit) {
     }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
     DailyMobileQuestTheme {
-        SharedTransitionLayout {
-            val sharedTransitionScope = this
-            HomeScreen(
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = null,
-            )
-        }
+        HomeScreen()
     }
 }

@@ -4,92 +4,129 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.dailymobilequest.data.Screen
 import com.example.dailymobilequest.presentation.AppListScreen
 import com.example.dailymobilequest.presentation.AppListViewModel
 import com.example.dailymobilequest.presentation.DetailScreen
-import com.example.dailymobilequest.presentation.QuestDetailViewModel
 import com.example.dailymobilequest.presentation.HomeScreen
+import com.example.dailymobilequest.presentation.QuestDetailViewModel
 import com.example.dailymobilequest.presentation.QuestScreen
 import com.example.dailymobilequest.ui.theme.DailyMobileQuestTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalSharedTransitionApi::class)
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             DailyMobileQuestTheme {
+                val navController = rememberNavController()
+                val currentBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = currentBackStackEntry?.destination?.route
+
+                val canGoBack = navController.previousBackStackEntry != null
+
+                val title = when {
+                    currentDestination == Screen.QUEST.name -> "퀘스트 모음"
+                    currentDestination == Screen.APP_LIST.name -> "설치 앱 목록"
+                    currentDestination?.startsWith(Screen.DETAIL.name) == true -> "앱 루틴 정하기"
+                    else -> "Daily Mobile Quest"
+                }
                 Scaffold(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(color = MaterialTheme.colorScheme.background)
-                ) { innerPadding ->
-                    val navController = rememberNavController()
-                    SharedTransitionLayout {
-                        NavHost(
-                            navController = navController,
-                            startDestination = Screen.HOME.name,
-                            modifier = Modifier.padding(innerPadding)
-                        ) {
-                            composable(route = Screen.HOME.name) {
-                                HomeScreen(
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    animatedContentScope = this@composable,
-                                    onQuestsButtonClicked = {
-                                        navController.navigate(Screen.QUEST.name)
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                Text(text = title)
+                            },
+                            navigationIcon = if (canGoBack) {
+                                {
+                                    IconButton(onClick = {
+                                        navController.popBackStack()
+                                    }) {
+                                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "backIcon")
                                     }
-                                )
-                            }
-
-                            composable(route = Screen.QUEST.name) {
-                                QuestScreen(
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    animatedContentScope = this@composable,
-                                    onClickAddButton = {
-                                        navController.navigate(Screen.APP_LIST.name)
-                                    }
-                                )
-                            }
-
-                            composable(
-                                route = "${Screen.DETAIL.name}/{packageName}", arguments = listOf(
-                                    navArgument("packageName") { type = NavType.StringType },
-                                )
-                            ) {
-                                val viewModel: QuestDetailViewModel = hiltViewModel()
-                                val uiState = viewModel.uiModel.collectAsState()
-                                DetailScreen(uiState.value)
-                            }
-
-                            composable(route = Screen.APP_LIST.name) {
-                                val viewModel: AppListViewModel = hiltViewModel()
-                                val uiState = viewModel.uiModel.collectAsState()
-
-                                AppListScreen(uiState.value) { app ->
-                                    navController.navigate("${Screen.DETAIL.name}/${app.packageName}")
                                 }
+                            } else {
+                                {}
+                            },
+                            colors = TopAppBarDefaults.mediumTopAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                titleContentColor = Color.White,
+                            )
+                        )
+                    }
+                ) { innerPadding ->
+                    val modifier = Modifier.padding(innerPadding)
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.HOME.name
+                    ) {
+                        composable(route = Screen.HOME.name) {
+                            HomeScreen(
+                                modifier = modifier,
+                                onQuestsButtonClicked = {
+                                    navController.navigate(Screen.QUEST.name)
+                                }
+                            )
+                        }
+
+                        composable(route = Screen.QUEST.name) {
+                            QuestScreen(
+                                modifier = modifier,
+                                onClickAddButton = {
+                                    navController.navigate(Screen.APP_LIST.name)
+                                }
+                            )
+                        }
+
+                        composable(
+                            route = "${Screen.DETAIL.name}/{packageName}", arguments = listOf(
+                                navArgument("packageName") { type = NavType.StringType },
+                            )
+                        ) {
+                            val viewModel: QuestDetailViewModel = hiltViewModel()
+                            val uiState = viewModel.uiModel.collectAsState()
+                            DetailScreen(
+                                modifier = modifier,
+                                uiState.value
+                            )
+                        }
+
+                        composable(route = Screen.APP_LIST.name) {
+                            val viewModel: AppListViewModel = hiltViewModel()
+                            val uiState = viewModel.uiModel.collectAsState()
+
+                            AppListScreen(modifier = modifier, uiState.value) { app ->
+                                navController.navigate("${Screen.DETAIL.name}/${app.packageName}")
                             }
                         }
                     }
+
                 }
             }
         }

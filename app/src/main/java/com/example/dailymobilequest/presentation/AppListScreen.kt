@@ -32,13 +32,14 @@ import com.example.dailymobilequest.data.QuestAppProfile
  */
 @Composable
 fun AppListScreen(
+    modifier: Modifier,
     screenModel: AppListScreenUiModel,
     onClick: (QuestAppProfile) -> Unit = {}
 ) {
     when (screenModel) {
         AppListScreenUiModel.Loading -> {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
@@ -46,17 +47,22 @@ fun AppListScreen(
         }
 
         is AppListScreenUiModel.Loaded -> {
-            AppListLoadedScreen(appList = screenModel.appList, onClick = onClick)
+            AppListLoadedScreen(
+                modifier = modifier,
+                appList = screenModel.appList,
+                onClick = onClick
+            )
         }
     }
 }
 
 @Composable
 private fun AppListLoadedScreen(
+    modifier: Modifier = Modifier,
     appList: List<QuestAppProfile>,
     onClick: (QuestAppProfile) -> Unit
 ) {
-    LazyColumn {
+    LazyColumn(modifier = modifier) {
         items(appList) { app ->
             Row(
                 modifier = Modifier
@@ -107,6 +113,7 @@ private fun AppListLoadedScreen(
 @Preview
 fun AppListScreenPreview() {
     AppListScreen(
+        modifier = Modifier,
         AppListScreenUiModel.Loaded(
             listOf(
                 QuestAppProfile(
