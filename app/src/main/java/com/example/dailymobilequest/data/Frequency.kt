@@ -25,7 +25,7 @@ sealed class Frequency {
         val dayOfMonth: List<DayOfMonth>
     ) : Frequency() {
         override fun toString(): String {
-            return "${dayOfMonth.joinToString(",")}일"
+            return "매월 ${dayOfMonth.joinToString(",")}일"
         }
     }
 }
