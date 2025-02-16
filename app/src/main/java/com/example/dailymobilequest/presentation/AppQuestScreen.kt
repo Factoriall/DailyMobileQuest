@@ -60,8 +60,8 @@ fun AppQuestScreen(
     modifier: Modifier = Modifier,
     uiModel: QuestAppDetailUiModel,
     onAddButtonClicked: () -> Unit = {},
-    onEditButtonClicked: () -> Unit = {},
-    onDeleteButtonClicked: () -> Unit = {}
+    onEditButtonClicked: (id: Long) -> Unit = {},
+    onDeleteButtonClicked: (id: Long) -> Unit = {}
 ) {
     Box {
         Column(modifier = modifier.fillMaxSize()) {
