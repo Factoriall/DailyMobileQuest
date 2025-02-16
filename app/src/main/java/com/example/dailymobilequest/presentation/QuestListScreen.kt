@@ -24,10 +24,10 @@ import com.example.dailymobilequest.data.QuestAppProfile
 import com.example.dailymobilequest.ui.theme.DailyMobileQuestTheme
 
 @Composable
-fun QuestScreen(
+fun QuestListScreen(
     modifier: Modifier = Modifier,
     onClickAddButton: () -> Unit = {},
-    onClickDetailButton: () -> Unit = {}
+    onClickAppButton: () -> Unit = {}
 ) {
     Column(modifier = modifier) {
         val questList = listOf<QuestAppProfile>()
@@ -70,8 +70,8 @@ fun QuestScreen(
 
 @Composable
 @Preview
-fun QuestScreenPreview() {
+fun QuestListScreenPreview() {
     DailyMobileQuestTheme {
-        QuestScreen()
+        QuestListScreen()
     }
 }

@@ -29,10 +29,10 @@ import androidx.navigation.navArgument
 import com.example.dailymobilequest.data.Screen
 import com.example.dailymobilequest.presentation.AppListScreen
 import com.example.dailymobilequest.presentation.AppListViewModel
-import com.example.dailymobilequest.presentation.DetailScreen
+import com.example.dailymobilequest.presentation.AppQuestScreen
 import com.example.dailymobilequest.presentation.HomeScreen
-import com.example.dailymobilequest.presentation.QuestDetailViewModel
-import com.example.dailymobilequest.presentation.QuestScreen
+import com.example.dailymobilequest.presentation.AppQuestViewModel
+import com.example.dailymobilequest.presentation.QuestListScreen
 import com.example.dailymobilequest.ui.theme.DailyMobileQuestTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -96,7 +96,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(route = Screen.QUEST.name) {
-                            QuestScreen(
+                            QuestListScreen(
                                 modifier = modifier,
                                 onClickAddButton = {
                                     navController.navigate(Screen.APP_LIST.name)
@@ -109,9 +109,9 @@ class MainActivity : ComponentActivity() {
                                 navArgument("packageName") { type = NavType.StringType },
                             )
                         ) {
-                            val viewModel: QuestDetailViewModel = hiltViewModel()
+                            val viewModel: AppQuestViewModel = hiltViewModel()
                             val uiState = viewModel.uiModel.collectAsState()
-                            DetailScreen(
+                            AppQuestScreen(
                                 modifier = modifier,
                                 uiState.value
                             )

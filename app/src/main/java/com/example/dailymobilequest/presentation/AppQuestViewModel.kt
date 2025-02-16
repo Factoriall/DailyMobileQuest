@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 /**
- * 클래스에 대한 간단한 설명이나 참고 url을 남겨주세요.
+ * 하나의 앱 퀘스트 모음 관련 뷰모델
  */
 @HiltViewModel
-class QuestDetailViewModel @Inject constructor(
+class AppQuestViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     appListRepository: AppListRepository
 ) : ViewModel() {
@@ -25,7 +25,6 @@ class QuestDetailViewModel @Inject constructor(
     val uiModel: StateFlow<QuestAppDetailUiModel> = _uiModel.asStateFlow()
 
     init {
-        Log.d("DetailViewModel", "packageName: $packageName")
         val app = appListRepository.getCache(packageName)
 
         if (app != null) {
