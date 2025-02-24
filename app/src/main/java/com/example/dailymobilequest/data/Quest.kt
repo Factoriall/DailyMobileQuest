@@ -2,10 +2,7 @@ package com.example.dailymobilequest.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
 import androidx.room.TypeConverters
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import java.time.Instant
 
 /**

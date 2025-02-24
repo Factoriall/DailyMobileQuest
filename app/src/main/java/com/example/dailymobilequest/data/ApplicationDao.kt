@@ -9,7 +9,7 @@ import androidx.room.Query
  */
 @Dao
 interface ApplicationDao {
-    @Query("SELECT * FROM questapp")
+    @Query("SELECT * FROM Application")
     fun getAll(): List<Application>
 
     @Insert
