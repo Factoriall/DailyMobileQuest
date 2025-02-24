@@ -76,6 +76,10 @@ dependencies {
     implementation(libs.androidx.room.ktx)
 
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.gson)
+    implementation(libs.moshi.kotlin)
+    implementation (libs.moshi.adapters)
+
 }
 
 // Allow references to generated code

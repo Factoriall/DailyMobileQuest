@@ -1,5 +1,9 @@
 package com.example.dailymobilequest.data
 
+import androidx.room.TypeConverter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
+
 /**
  * 알람 관련 데이터 클래스
  */
@@ -23,4 +27,23 @@ sealed class Alarm {
             }
         }
     }
+}
+
+class AlarmTypeConverter {
+    private val moshi: Moshi = Moshi.Builder()
+        .add(
+            PolymorphicJsonAdapterFactory.of(Alarm::class.java, "type")
+                .withSubtype(Alarm.No::class.java, "no")
+                .withSubtype(Alarm.Yes.Sound::class.java, "sound")
+                .withSubtype(Alarm.Yes.Notification::class.java, "notification")
+        )
+        .build()
+
+    private val adapter = moshi.adapter(Alarm::class.java)
+
+    @TypeConverter
+    fun fromAlarm(alarm: Alarm?): String? = alarm?.let { adapter.toJson(it) }
+
+    @TypeConverter
+    fun toAlarm(json: String?): Alarm? = json?.let { adapter.fromJson(it) }
 }

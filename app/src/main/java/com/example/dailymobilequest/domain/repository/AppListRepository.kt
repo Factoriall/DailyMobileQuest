@@ -2,7 +2,7 @@ package com.example.dailymobilequest.domain.repository
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import com.example.dailymobilequest.data.QuestAppProfile
+import com.example.dailymobilequest.data.ApplicationProfile
 import com.example.dailymobilequest.data.StoreName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,9 +16,9 @@ import javax.inject.Singleton
 class AppListRepository @Inject constructor(
     private val packageManager: PackageManager
 ) {
-    private val cacheMap: MutableMap<String, QuestAppProfile> = mutableMapOf()
+    private val cacheMap: MutableMap<String, ApplicationProfile> = mutableMapOf()
 
-    suspend fun fetchAppList(): List<QuestAppProfile> {
+    suspend fun fetchAppList(): List<ApplicationProfile> {
         val intent = Intent(Intent.ACTION_MAIN, null).apply {
             addCategory(Intent.CATEGORY_LAUNCHER)
         }
@@ -31,7 +31,7 @@ class AppListRepository @Inject constructor(
                     } else {
                         packageManager.getInstallerPackageName(it.activityInfo.packageName)
                     }
-                QuestAppProfile(
+                ApplicationProfile(
                     appName = it.loadLabel(packageManager).toString(),
                     iconDrawable = it.loadIcon(packageManager),
                     packageName = it.activityInfo.packageName,
@@ -43,7 +43,7 @@ class AppListRepository @Inject constructor(
         }
     }
 
-    fun getCache(packageName: String): QuestAppProfile? {
+    fun getCache(packageName: String): ApplicationProfile? {
         return cacheMap[packageName]
     }
 }

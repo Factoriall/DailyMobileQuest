@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.dailymobilequest.R
-import com.example.dailymobilequest.data.QuestAppProfile
+import com.example.dailymobilequest.data.ApplicationProfile
 
 /**
  * 설치 가능한 앱 리스트 항목을 보여주는 화면
@@ -34,7 +34,7 @@ import com.example.dailymobilequest.data.QuestAppProfile
 fun AppListScreen(
     modifier: Modifier,
     screenModel: AppListScreenUiModel,
-    onClick: (QuestAppProfile) -> Unit = {}
+    onClick: (ApplicationProfile) -> Unit = {}
 ) {
     when (screenModel) {
         AppListScreenUiModel.Loading -> {
@@ -59,8 +59,8 @@ fun AppListScreen(
 @Composable
 private fun AppListLoadedScreen(
     modifier: Modifier = Modifier,
-    appList: List<QuestAppProfile>,
-    onClick: (QuestAppProfile) -> Unit
+    appList: List<ApplicationProfile>,
+    onClick: (ApplicationProfile) -> Unit
 ) {
     LazyColumn(modifier = modifier) {
         items(appList) { app ->
@@ -116,17 +116,17 @@ fun AppListScreenPreview() {
         modifier = Modifier,
         AppListScreenUiModel.Loaded(
             listOf(
-                QuestAppProfile(
+                ApplicationProfile(
                     appName = "App 1",
                     iconDrawable = ColorDrawable(0xFF000000.toInt()),
                     packageName = "com.example.app1"
                 ),
-                QuestAppProfile(
+                ApplicationProfile(
                     appName = "App 2",
                     iconDrawable = ColorDrawable(0xFF111111.toInt()),
                     packageName = "com.example.app2"
                 ),
-                QuestAppProfile(
+                ApplicationProfile(
                     appName = "App 3",
                     iconDrawable = ColorDrawable(0xFF999999.toInt()),
                     packageName = "com.example.app3"
@@ -138,5 +138,5 @@ fun AppListScreenPreview() {
 
 sealed class AppListScreenUiModel {
     data object Loading : AppListScreenUiModel()
-    data class Loaded(val appList: List<QuestAppProfile>) : AppListScreenUiModel()
+    data class Loaded(val appList: List<ApplicationProfile>) : AppListScreenUiModel()
 }

@@ -26,6 +26,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -61,6 +62,7 @@ fun AppQuestScreen(
     uiModel: QuestAppDetailUiModel,
     onAddButtonClicked: () -> Unit = {},
     onEditButtonClicked: (id: Long) -> Unit = {},
+    onSaveButtonClicked: () -> Unit = {},
     onDeleteButtonClicked: (id: Long) -> Unit = {}
 ) {
     Box {
@@ -93,6 +95,13 @@ fun AppQuestScreen(
                         style = MaterialTheme.typography.bodySmall,
                         maxLines = 1
                     )
+
+                    Button(
+                        onClick = onSaveButtonClicked,
+                        modifier = Modifier.align(Alignment.End)
+                    ) {
+                        Text("저장")
+                    }
                 }
             }
 
@@ -258,15 +267,26 @@ fun AppQuestScreenPreview() {
                 QuestUiModel(
                     questName = "Test Quest 2",
                     description = "Test Description 2",
-                    frequency = Frequency.Weekly(2, listOf(DayOfWeek.MON, DayOfWeek.TUE)),
+                    frequency = Frequency.Weekly(listOf(DayOfWeek.MON, DayOfWeek.TUE)),
                     alarm = Alarm.No
                 ),
+
                 QuestUiModel(
                     questName = "Test Quest 3",
                     description = "Test Description 3",
                     frequency = Frequency.Daily(1),
                     alarm = Alarm.Yes.Sound("12:00")
-                )
+                ),
+                QuestUiModel(
+                    questName = "Test Quest 4",
+                    description = "Test Description 4",
+                    frequency = Frequency.FlexibleWeekly(
+                        perWeek = 3,
+                        startDayOfWeek = DayOfWeek.MON,
+                        dayOfWeeks = listOf(1, 2, 3, 4, 5)
+                    ),
+                    alarm = Alarm.No
+                ),
             )
         )
     )
