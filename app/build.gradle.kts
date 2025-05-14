@@ -79,7 +79,6 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.moshi.kotlin)
     implementation (libs.moshi.adapters)
-
 }
 
 // Allow references to generated code

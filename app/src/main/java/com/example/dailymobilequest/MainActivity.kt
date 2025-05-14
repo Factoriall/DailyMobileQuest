@@ -113,7 +113,10 @@ class MainActivity : ComponentActivity() {
                             val uiState = viewModel.uiModel.collectAsState()
                             AppQuestScreen(
                                 modifier = modifier,
-                                uiState.value
+                                uiState.value,
+                                onSaveButtonClicked = {
+                                    viewModel.saveData()
+                                }
                             )
                         }
 
@@ -126,7 +129,6 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
-
                 }
             }
         }

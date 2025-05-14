@@ -47,7 +47,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.dailymobilequest.R
-import com.example.dailymobilequest.data.Alarm
 import com.example.dailymobilequest.data.DayOfMonth
 import com.example.dailymobilequest.data.DayOfWeek
 import com.example.dailymobilequest.data.Frequency
@@ -118,7 +117,6 @@ fun AppQuestScreen(
                 }
             }
         }
-
 
         FloatingActionButton(
             onClick = {
@@ -220,10 +218,6 @@ private fun QuestTile(
                     text = questUiModel.frequency.toString(),
                     style = MaterialTheme.typography.bodyMedium,
                 )
-                Text(
-                    text = questUiModel.alarm.toString(),
-                    style = MaterialTheme.typography.bodyMedium
-                )
             }
         }
     }
@@ -245,7 +239,6 @@ data class QuestUiModel(
     val startDate: Instant? = null,
     val endDate: Instant? = null,
     val frequency: Frequency,
-    val alarm: Alarm
 )
 
 @Composable
@@ -262,20 +255,17 @@ fun AppQuestScreenPreview() {
                     questName = "Test Quest 1",
                     description = "Test Description 1",
                     frequency = Frequency.Monthly(listOf(DayOfMonth(1), DayOfMonth(2))),
-                    alarm = Alarm.Yes.Notification("10:00")
                 ),
                 QuestUiModel(
                     questName = "Test Quest 2",
                     description = "Test Description 2",
                     frequency = Frequency.Weekly(listOf(DayOfWeek.MON, DayOfWeek.TUE)),
-                    alarm = Alarm.No
                 ),
 
                 QuestUiModel(
                     questName = "Test Quest 3",
                     description = "Test Description 3",
                     frequency = Frequency.Daily(1),
-                    alarm = Alarm.Yes.Sound("12:00")
                 ),
                 QuestUiModel(
                     questName = "Test Quest 4",
@@ -285,7 +275,6 @@ fun AppQuestScreenPreview() {
                         startDayOfWeek = DayOfWeek.MON,
                         dayOfWeeks = listOf(1, 2, 3, 4, 5)
                     ),
-                    alarm = Alarm.No
                 ),
             )
         )

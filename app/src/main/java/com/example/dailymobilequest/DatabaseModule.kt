@@ -2,7 +2,8 @@ package com.example.dailymobilequest
 
 import android.content.Context
 import androidx.room.Room
-import com.example.dailymobilequest.data.ApplicationDao
+import com.example.dailymobilequest.data.AppDataDao
+import com.example.dailymobilequest.data.QuestDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,7 +29,12 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideQuestDao(database: AppDatabase): ApplicationDao {
-        return database.questAppDao()
+    fun provideAppDataWithQuestListDao(database: AppDatabase): AppDataDao {
+        return database.appDataWithQuestListDao()
+    }
+
+    @Provides
+    fun provideQuestDao(database: AppDatabase): QuestDao {
+        return database.questDao()
     }
 }
