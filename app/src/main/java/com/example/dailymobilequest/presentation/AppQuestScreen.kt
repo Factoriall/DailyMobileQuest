@@ -1,6 +1,5 @@
 package com.example.dailymobilequest.presentation
 
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
@@ -27,16 +26,23 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,25 +51,31 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.drawable.toDrawable
 import coil.compose.AsyncImage
 import com.example.dailymobilequest.R
 import com.example.dailymobilequest.data.DayOfMonth
 import com.example.dailymobilequest.data.DayOfWeek
 import com.example.dailymobilequest.data.Frequency
+import kotlinx.coroutines.launch
 import java.time.Instant
 
 /**
  * 하나의 앱 퀘스트 모음 관련 뷰모델
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppQuestScreen(
     modifier: Modifier = Modifier,
     uiModel: QuestAppDetailUiModel,
-    onAddButtonClicked: () -> Unit = {},
     onEditButtonClicked: (id: Long) -> Unit = {},
     onSaveButtonClicked: () -> Unit = {},
     onDeleteButtonClicked: (id: Long) -> Unit = {}
 ) {
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var isSheetVisible by remember { mutableStateOf(false) }
+
     Box {
         Column(modifier = modifier.fillMaxSize()) {
             Row(
@@ -120,7 +132,10 @@ fun AppQuestScreen(
 
         FloatingActionButton(
             onClick = {
-                onAddButtonClicked()
+                scope.launch {
+                    isSheetVisible = true
+                    sheetState.show()
+                }
             },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -131,8 +146,23 @@ fun AppQuestScreen(
         ) {
             Image(Icons.Default.Add, contentDescription = null)
         }
+
+        if (isSheetVisible) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    scope.launch {
+                        sheetState.hide()
+                        isSheetVisible = false
+                    }
+                }
+            ) {
+                // TODO: BottomSheet 내용 채우기
+                Text("Example BottomSheet")
+            }
+        }
     }
 }
+
 
 @Composable
 private fun QuestTile(
@@ -249,7 +279,7 @@ fun AppQuestScreenPreview() {
             title = "TestApp",
             packageName = "testtest",
             storeName = "Google Play",
-            iconDrawable = ColorDrawable(0xFF000000.toInt()),
+            iconDrawable = 0xFF000000.toInt().toDrawable(),
             questList = listOf(
                 QuestUiModel(
                     questName = "Test Quest 1",

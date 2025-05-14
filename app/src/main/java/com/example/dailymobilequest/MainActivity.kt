@@ -30,8 +30,8 @@ import com.example.dailymobilequest.data.Screen
 import com.example.dailymobilequest.presentation.AppListScreen
 import com.example.dailymobilequest.presentation.AppListViewModel
 import com.example.dailymobilequest.presentation.AppQuestScreen
-import com.example.dailymobilequest.presentation.HomeScreen
 import com.example.dailymobilequest.presentation.AppQuestViewModel
+import com.example.dailymobilequest.presentation.HomeScreen
 import com.example.dailymobilequest.presentation.QuestListScreen
 import com.example.dailymobilequest.ui.theme.DailyMobileQuestTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -82,6 +82,7 @@ class MainActivity : ComponentActivity() {
                     }
                 ) { innerPadding ->
                     val modifier = Modifier.padding(innerPadding)
+
                     NavHost(
                         navController = navController,
                         startDestination = Screen.HOME.name
